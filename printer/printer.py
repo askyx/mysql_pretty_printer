@@ -1018,6 +1018,15 @@ class MyTree(gdb.Command):
         )
 
         if item.dynamic_type.target().name == 'Query_block':
+            ts = item['leaf_tables']
+            trs = ''
+            while ts:
+                trs += "{} ".format(getchars(ts['alias']))
+                ts = ts['next_leaf']
+
+            str += 'master: {} '.format(item['master'].format_string())
+            str += "tables: {} ".format(trs)
+            str += "select_number: {} ".format(int(item['select_number']))
             print(str)
             if item['slave']:
                 subquery = item['slave']
