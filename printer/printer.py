@@ -1013,6 +1013,10 @@ class MyTree(gdb.Command):
     def walk(self, item, level):
         item = item.cast(item.dynamic_type)
 
+        if item.dynamic_type.target().name == 'Query_expression':
+            self.walk(item['m_query_term'], level)
+            return
+
         str = "{}{}: {} ".format(
             level * "  ", item.dynamic_type.target().name, self.qbPrintThis(item)
         )
